@@ -4,6 +4,14 @@ COLOR_WHITE = (245, 245, 245)
 COLOR_GRAY = (224, 224, 224)
 COLOR_YELLOW = (255, 215, 0)
 
+# E
+ENTITY_SPEED = {'Level1Bg4': 0,
+                'Level1Bg3': 1,
+                'Level1Bg2': 5,
+                'Level1Bg1': 5,
+                'Level1Bg0': 7
+                }
+
 # M
 MENU_OPTIONS = ('NEW GAME 1P',
                 'NEW GAME 2P - COOPERATIVE',
