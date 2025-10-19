@@ -5,6 +5,8 @@ COLOR_RED = (220, 20, 60)
 COLOR_WHITE = (245, 245, 245)
 COLOR_GRAY = (224, 224, 224)
 COLOR_YELLOW = (255, 215, 0)
+COLOR_GREEN = (0, 128, 0)
+COLOR_CYAN = (0, 128, 128)
 
 # E
 EVENT_ENEMY = pygame.USEREVENT + 1
@@ -35,9 +37,25 @@ ENTITY_HEALTH = {
                  'Player2': 300,
                  'Player2Shot': 1,
                  'Enemy1': 60,
-                 'Enemy1Shot': 90,
+                 'Enemy1Shot': 10,
                  'Enemy2': 50,
-                 'Enemy2Shot': 80
+                 'Enemy2Shot': 10
+}
+
+ENTITY_SCORE = {
+    'Level1Bg0': 0,
+    'Level1Bg1': 0,
+    'Level1Bg2': 0,
+    'Level1Bg3': 0,
+    'Level1Bg4': 0,
+    'Player1': 0,
+    'Player1Shot': 0,
+    'Player2': 0,
+    'Player2Shot': 0,
+    'Enemy1': 100,
+    'Enemy1Shot': 0,
+    'Enemy2': 125,
+    'Enemy2Shot': 0
 }
 
 ENTITY_SHOT_DELAY = {
@@ -47,11 +65,27 @@ ENTITY_SHOT_DELAY = {
                     'Enemy2': 70,
 }
 
-# Constantes
 ENEMY_SHOT_OFFSET = {
     'Enemy1': -130,  # ajuste pixels para centralizar visualmente
     'Enemy2': -65
 }
+
+ENTITY_DAMAGE = {
+    'Level1Bg0': 0,
+    'Level1Bg1': 0,
+    'Level1Bg2': 0,
+    'Level1Bg3': 0,
+    'Level1Bg4': 0,
+    'Player1': 1,
+    'Player1Shot': 25,
+    'Player2': 1,
+    'Player2Shot': 25,
+    'Enemy1': 1,
+    'Enemy1Shot': 20,
+    'Enemy2': 1,
+    'Enemy2Shot': 20
+}
+
 
 
 # M

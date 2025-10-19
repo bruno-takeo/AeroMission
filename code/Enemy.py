@@ -5,9 +5,7 @@ from code.Entity import Entity
 
 class Enemy(Entity):
     def __init__(self, name: str, position: tuple):
-        # não chama o super().__init__() ainda
-        self.name = name
-        self.position = position
+        super().__init__(name, position)
         self.shot_delay = ENTITY_SHOT_DELAY[self.name]
 
         # --- Escala ---

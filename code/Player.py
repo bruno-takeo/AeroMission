@@ -1,6 +1,6 @@
 import pygame
 from code.Const import WIN_WIDTH, WIN_HEIGHT, ENTITY_SPEED, PLAYER_KEY_UP, PLAYER_KEY_DOWN, PLAYER_KEY_LEFT, \
-    PLAYER_KEY_RIGHT, PLAYER_KEY_SHOOT, ENTITY_SHOT_DELAY
+    PLAYER_KEY_RIGHT, PLAYER_KEY_SHOOT, ENTITY_SHOT_DELAY, ENTITY_SCORE
 from code.Entity import Entity
 from code.PlayerShot import PlayerShot
 
@@ -12,6 +12,10 @@ class Player(Entity):
         self.position = position
         self.speed = ENTITY_SPEED.get(self.name, 5)
         self.shot_delay = ENTITY_SHOT_DELAY[self.name]
+        self.health = 100000
+        self.damage = 1
+        self.score = ENTITY_SCORE.get(self.name, 0)
+        self.last_dmg = 'None'
 
         # --- Escala ---
         escala = 0.4
