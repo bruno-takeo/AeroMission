@@ -1,7 +1,8 @@
 import pygame
 from code.Const import WIN_WIDTH, WIN_HEIGHT, ENTITY_SPEED, PLAYER_KEY_UP, PLAYER_KEY_DOWN, PLAYER_KEY_LEFT, \
-    PLAYER_KEY_RIGHT
+    PLAYER_KEY_RIGHT, PLAYER_KEY_SHOOT, ENTITY_SHOT_DELAY
 from code.Entity import Entity
+from code.PlayerShot import PlayerShot
 
 
 class Player(Entity):
@@ -10,6 +11,7 @@ class Player(Entity):
         self.name = name
         self.position = position
         self.speed = ENTITY_SPEED.get(self.name, 5)
+        self.shot_delay = ENTITY_SHOT_DELAY[self.name]
 
         # --- Escala ---
         escala = 0.4
@@ -62,3 +64,23 @@ class Player(Entity):
             self.animation_timer = now
 
         self.surf = self.animations[self.current_state][self.frame_index]
+
+    def get_shot_position(self):
+        if self.name == 'Player1':
+            return (self.rect.centerx + 85, self.rect.centery)  # offsets ajustados para Player1
+        elif self.name == 'Player2':
+            return (self.rect.centerx + 10, self.rect.centery - 125)  # offsets ajustados para Player2
+
+    def shoot(self):
+        self.shot_delay -= 1
+        if self.shot_delay == 0:
+            self.shot_delay = ENTITY_SHOT_DELAY[self.name]
+            pressed_key = pygame.key.get_pressed()
+            if pressed_key[PLAYER_KEY_SHOOT[self.name]]:
+                return PlayerShot(f'{self.name}Shot', self.get_shot_position())
+
+
+
+
+
+

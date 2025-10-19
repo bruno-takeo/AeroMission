@@ -1,5 +1,6 @@
 import pygame
-from code.Const import ENTITY_SPEED, WIN_WIDTH
+from code.Const import ENTITY_SPEED, WIN_WIDTH, ENTITY_HEALTH, ENTITY_SHOT_DELAY, ENEMY_SHOT_OFFSET
+from code.EnemyShot import EnemyShot
 from code.Entity import Entity
 
 class Enemy(Entity):
@@ -7,6 +8,7 @@ class Enemy(Entity):
         # não chama o super().__init__() ainda
         self.name = name
         self.position = position
+        self.shot_delay = ENTITY_SHOT_DELAY[self.name]
 
         # --- Escala ---
         escala = 0.35  # ajuste conforme necessário
@@ -22,11 +24,17 @@ class Enemy(Entity):
         # --- Define o rect ---
         self.rect = self.surf.get_rect(midleft=position)
 
-        # --- Velocidade ---
+        # --- Velocidade e vida ---
         self.speed = ENTITY_SPEED.get(self.name, 3)
+        self.health = ENTITY_HEALTH.get(self.name, 1)
 
     def move(self):
         # Movimento simples da direita para a esquerda
-        self.rect.centerx -= self.speed
-        if self.rect.right <= 0:
-            self.rect.left = WIN_WIDTH
+        self.rect.centerx -= ENTITY_SPEED[self.name]
+
+    def shoot(self):
+        self.shot_delay -= 1
+        if self.shot_delay == 0:
+            self.shot_delay = ENTITY_SHOT_DELAY[self.name]
+            offset_y = ENEMY_SHOT_OFFSET.get(self.name, 0)
+            return EnemyShot(f'{self.name}Shot', (self.rect.centerx - 150, self.rect.centery + offset_y))
