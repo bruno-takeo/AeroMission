@@ -1,3 +1,4 @@
+import os
 import random
 import sys
 from enum import nonmember
@@ -8,7 +9,8 @@ from pygame.font import Font
 from pygame.rect import Rect
 from pygame.surface import Surface
 
-from code.Const import COLOR_WHITE, WIN_HEIGHT, MENU_OPTIONS, EVENT_ENEMY, SPAWN_TIME, COLOR_GREEN, COLOR_CYAN
+from code.Const import COLOR_WHITE, WIN_HEIGHT, MENU_OPTIONS, EVENT_ENEMY, SPAWN_TIME, COLOR_GREEN, COLOR_CYAN, \
+    EVENT_TIMEOUT, TIMEOUT_STEP, TIMEOUT_LEVEL
 from code.Enemy import Enemy
 from code.Entity import Entity
 from code.EntityFactory import EntityFactory
@@ -18,22 +20,38 @@ from code.Player import Player
 
 class Level:
 
-    def __init__(self, window, name, game_mode):
+    def __init__(self, window: Surface, name: str, game_mode: str, player_score: list[int]):
         self.window = window
         self.name = name
         self.game_mode = game_mode
         self.entity_list: list[Entity] = []
-        self.entity_list.append(EntityFactory.get_entity('Player1'))
+        player = EntityFactory.get_entity('Player1')
+        player.score = player_score[0]
+        self.entity_list.append(player)
         if game_mode in [MENU_OPTIONS[1], MENU_OPTIONS[2]]:
-            self.entity_list.append(EntityFactory.get_entity('Player2'))
+            player = EntityFactory.get_entity('Player2')
+            player.score = player_score[1]
+            self.entity_list.append(player)
         pygame.time.set_timer(EVENT_ENEMY, SPAWN_TIME)
-        self.entity_list.extend(EntityFactory.get_entity('Level1Bg'))
-        self.timeout = 20000
+        pygame.time.set_timer(EVENT_TIMEOUT, TIMEOUT_STEP)
+        self.entity_list.extend(EntityFactory.get_entity(self.name + 'Bg'))
+        self.timeout = TIMEOUT_LEVEL
 
-    def run(self):
-        pygame.mixer_music.load(f'./asset/{self.name}.mp3')
+    def run(self, player_score: list[int]):
+        music_path_mp3 = f'./asset/{self.name}.mp3'
+        music_path_wav = f'./asset/{self.name}.wav'
+
+        if os.path.exists(music_path_mp3):
+            pygame.mixer_music.load(music_path_mp3)
+        elif os.path.exists(music_path_wav):
+            pygame.mixer_music.load(music_path_wav)
+        else:
+            print(f"Aviso: nenhuma música encontrada para {self.name}.")
+            pygame.mixer_music.stop()
         pygame.mixer_music.play(-1)
         clock = pygame.time.Clock()
+
+
         while True:
             clock.tick(60)
             for ent in reversed(self.entity_list):
@@ -56,6 +74,24 @@ class Level:
                 if event.type == EVENT_ENEMY:
                     choice = random.choice(('Enemy1', 'Enemy2'))
                     self.entity_list.insert(0, EntityFactory.get_entity(choice))
+                if event.type == EVENT_TIMEOUT:
+                    self.timeout -= TIMEOUT_STEP
+                    if self.timeout == 0:
+                        for ent in self.entity_list:
+                            if isinstance(ent, Player) and ent.name == 'Player1':
+                                player_score[0] = ent.score
+                            if isinstance(ent, Player) and ent.name == 'Player2':
+                                player_score[1] = ent.score
+                        return True
+
+                found_player = False
+                for ent in self.entity_list:
+                    if isinstance(ent, Player):
+                        found_player = True
+
+                if not found_player:
+                    return False
+
 
             # print text
             self.level_text(14, f'{self.name} - Timeout: {self.timeout / 1000 :.1f}s', COLOR_WHITE, (10, 5))

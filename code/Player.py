@@ -12,7 +12,7 @@ class Player(Entity):
         self.position = position
         self.speed = ENTITY_SPEED.get(self.name, 5)
         self.shot_delay = ENTITY_SHOT_DELAY[self.name]
-        self.health = 100000
+        self.health = 50000
         self.damage = 1
         self.score = ENTITY_SCORE.get(self.name, 0)
         self.last_dmg = 'None'
