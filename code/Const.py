@@ -144,7 +144,7 @@ PLAYER_KEY_RIGHT = {'Player1': pygame.K_RIGHT,
 PLAYER_KEY_SHOOT = {'Player1': pygame.K_SPACE,
                  'Player2': pygame.K_LCTRL}
 
-# S
+
 SPAWN_TIME = 4000
 
 # T
@@ -154,3 +154,21 @@ TIMEOUT_LEVEL = 20000
 # W
 WIN_WIDTH = 930
 WIN_HEIGHT = 523
+
+# S
+SCORE_POS = {
+    'Title': (WIN_WIDTH / 2, 50),
+    'EnterName': (WIN_WIDTH / 2, 110),
+    'Label': (WIN_WIDTH / 2, 110),
+    'Name': (WIN_WIDTH / 2, 150),
+    0: (WIN_WIDTH / 2, 150),
+    1: (WIN_WIDTH / 2, 180),
+    2: (WIN_WIDTH / 2, 210),
+    3: (WIN_WIDTH / 2, 240),
+    4: (WIN_WIDTH / 2, 270),
+    5: (WIN_WIDTH / 2, 300),
+    6: (WIN_WIDTH / 2, 330),
+    7: (WIN_WIDTH / 2, 360),
+    8: (WIN_WIDTH / 2, 390),
+    9: (WIN_WIDTH / 2, 420),
+}
