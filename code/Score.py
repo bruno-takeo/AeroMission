@@ -88,7 +88,7 @@ class Score:
 
             # Cada campo desenhado separadamente
             self.score_text(22, name, COLOR_WHITE, (200, y))
-            self.score_text(22, f'{score:05d}', COLOR_WHITE, (400, y))
+            self.score_text(22, f'{int(score):05d}', COLOR_WHITE, (400, y))
             self.score_text(22, date, COLOR_WHITE, (650, y))
 
         while True:

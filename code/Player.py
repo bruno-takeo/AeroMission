@@ -12,7 +12,7 @@ class Player(Entity):
         self.position = position
         self.speed = ENTITY_SPEED.get(self.name, 5)
         self.shot_delay = ENTITY_SHOT_DELAY[self.name]
-        self.health = 50000
+        self.health = 500
         self.damage = 1
         self.score = ENTITY_SCORE.get(self.name, 0)
         self.last_dmg = 'None'
@@ -40,7 +40,18 @@ class Player(Entity):
         self.animation_timer = 0
         self.frame_delay = 100  # ms entre frames
         self.surf = self.animations[self.current_state][self.frame_index]
-        self.rect = self.surf.get_rect(midleft=position)
+
+        # --- Máscara e retângulo reduzido (não destrutivo) ---
+        mask = pygame.mask.from_surface(self.surf)
+        reduced_rects = mask.get_bounding_rects()
+        if reduced_rects:
+            reduced_rect = reduced_rects[0]
+        else:
+            reduced_rect = self.surf.get_rect()  # fallback
+
+        self.rect = reduced_rect
+        self.rect.topleft = position
+        self.mask = mask  # salva a máscara para colisão precisa
 
     def move(self):
         pressed_key = pygame.key.get_pressed()
@@ -67,13 +78,25 @@ class Player(Entity):
             self.frame_index = (self.frame_index + 1) % len(self.animations[self.current_state])
             self.animation_timer = now
 
+        # Atualiza a imagem
         self.surf = self.animations[self.current_state][self.frame_index]
+
+        # Atualiza máscara e bounding box sem alterar a imagem original
+        old_center = self.rect.center
+        self.mask = pygame.mask.from_surface(self.surf)
+        reduced_rects = self.mask.get_bounding_rects()
+        if reduced_rects:
+            reduced_rect = reduced_rects[0]
+        else:
+            reduced_rect = self.surf.get_rect()
+        self.rect = reduced_rect
+        self.rect.center = old_center
 
     def get_shot_position(self):
         if self.name == 'Player1':
-            return (self.rect.centerx + 85, self.rect.centery)  # offsets ajustados para Player1
+            return (self.rect.centerx + 85, self.rect.centery + 13)  # offsets ajustados para Player1
         elif self.name == 'Player2':
-            return (self.rect.centerx + 10, self.rect.centery - 125)  # offsets ajustados para Player2
+            return (self.rect.centerx + 75, self.rect.centery + 3)  # offsets ajustados para Player2
 
     def shoot(self):
         self.shot_delay -= 1
@@ -82,9 +105,3 @@ class Player(Entity):
             pressed_key = pygame.key.get_pressed()
             if pressed_key[PLAYER_KEY_SHOOT[self.name]]:
                 return PlayerShot(f'{self.name}Shot', self.get_shot_position())
-
-
-
-
-
-

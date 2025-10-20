@@ -35,4 +35,4 @@ class Enemy(Entity):
         if self.shot_delay == 0:
             self.shot_delay = ENTITY_SHOT_DELAY[self.name]
             offset_y = ENEMY_SHOT_OFFSET.get(self.name, 0)
-            return EnemyShot(f'{self.name}Shot', (self.rect.centerx - 150, self.rect.centery + offset_y))
+            return EnemyShot(f'{self.name}Shot', (self.rect.centerx - 100, self.rect.centery + offset_y))
